@@ -1,11 +1,13 @@
+const resetBtn = document.querySelector("#reset-btn");
+
+const ceBtn = document.querySelector("#back-btn");
+const displayValueContainer = document.querySelector(
+  ".display-value-container"
+);
 let firstNumber;
 let operator;
 let secondNumber;
 let displayValue;
-
-const displayValueContainer = document.querySelector(
-  ".display-value-container"
-);
 
 function operate(firstNumber, operator, secondNumber) {
   return operator(firstNumber, secondNumber);
@@ -19,7 +21,7 @@ function add(...args) {
   return sum;
 }
 
-function minus(...args) {
+function subtract(...args) {
   let sum = args[0];
   for (let i = 1; i < args.length; i++) {
     sum -= args[i];
@@ -51,9 +53,47 @@ numberBtns.forEach((btn) =>
   })
 );
 
-const btns = document.querySelectorAll("button");
-btns.forEach((btn) =>
+const operators = document.querySelectorAll(".operator");
+operators.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    console.log(e.target.textContent);
+    if (isNaN(+displayValue.slice(displayValue.length - 1))) {
+      deleteLastCha();
+    }
+    firstNumber = displayValue;
+    operator =
+      e.target.textContent === "+"
+        ? add
+        : e.target.textContent === "-"
+        ? subtract
+        : e.target.textContent === "×"
+        ? multiply
+        : divide;
+    displayValue = displayValueContainer.lastElementChild.textContent +=
+      e.target.textContent;
   })
 );
+
+function checkOperator(str) {
+  let operator =
+    e.target.textContent === "+"
+      ? add
+      : e.target.textContent === "-"
+      ? subtract
+      : e.target.textContent === "×"
+      ? multiply
+      : divide;
+}
+
+function clearDisplay() {
+  displayValueContainer.lastElementChild.textContent = "";
+}
+
+function deleteLastCha() {
+  displayValueContainer.lastElementChild.textContent =
+    displayValueContainer.lastElementChild.textContent.slice(
+      0,
+      displayValueContainer.lastElementChild.textContent.length - 1
+    );
+}
+resetBtn.addEventListener("click", clearDisplay);
+ceBtn.addEventListener("click", deleteLastCha);

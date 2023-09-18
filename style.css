@@ -37,6 +37,7 @@ h1 {
   border-radius: 5px;
   background-color: #e4f1ff;
   padding: 8px;
+  overflow: hidden;
 }
 .display-value-container > div {
   font-size: 32px;
