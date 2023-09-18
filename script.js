@@ -1,6 +1,11 @@
 let firstNumber;
 let operator;
 let secondNumber;
+let displayValue;
+
+const displayValueContainer = document.querySelector(
+  ".display-value-container"
+);
 
 function operate(firstNumber, operator, secondNumber) {
   return operator(firstNumber, secondNumber);
@@ -41,10 +46,14 @@ function divide(...args) {
 const numberBtns = document.querySelectorAll(".number");
 numberBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    console.log(e.target.textContent);
+    displayValue = displayValueContainer.lastElementChild.textContent +=
+      e.target.textContent;
   })
 );
 
-// press button input number to store in first var until press other mathematic button
-// number go above
-// press mathematic button show mathematic
+const btns = document.querySelectorAll("button");
+btns.forEach((btn) =>
+  btn.addEventListener("click", (e) => {
+    console.log(e.target.textContent);
+  })
+);
