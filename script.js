@@ -7,6 +7,8 @@ const displayValueLastChild = displayValueContainer.lastElementChild;
 const numberBtns = document.querySelectorAll(".number");
 const operators = document.querySelectorAll(".operator");
 const resultBtn = document.querySelector("#result-btn");
+const upperDisplayLine = document.querySelector("#upper-line");
+let operatorStr = "";
 let firstNumber;
 let operator;
 let secondNumber;
@@ -50,19 +52,27 @@ function divide(...args) {
 }
 
 function checkOperator(e) {
-  operator =
-    e.target.textContent === "+"
-      ? add
-      : e.target.textContent === "-"
-      ? subtract
-      : e.target.textContent === "×"
-      ? multiply
-      : divide;
+  switch (e.target.textContent) {
+    case "+":
+      operator = add;
+      break;
+    case "-":
+      operator = subtract;
+      break;
+    case "×":
+      operator = multiply;
+      break;
+    case "÷":
+      operator = divide;
+      break;
+  }
+
   return operator;
 }
 
 function clearDisplay() {
   displayValueLastChild.textContent = "";
+  upperDisplayLine.textContent = "";
 }
 
 function deleteLastCha() {
@@ -80,6 +90,10 @@ function removeOperators() {
   }
 }
 
+function updateUpperDisplayValue() {
+  upperDisplayLine.textContent = `${firstNumber} ${operatorStr} ${secondNumber}`;
+}
+
 resetBtn.addEventListener("click", clearDisplay);
 ceBtn.addEventListener("click", deleteLastCha);
 
@@ -95,6 +109,7 @@ operators.forEach((btn) =>
     firstNumber = Number(displayValueLastChild.textContent);
     checkOperator(e);
     displayValue = displayValueLastChild.textContent = e.target.textContent;
+    operatorStr = e.target.textContent;
   })
 );
 resultBtn.addEventListener("click", (e) => {
@@ -106,6 +121,6 @@ resultBtn.addEventListener("click", (e) => {
 
     secondNumber
   );
-
+  updateUpperDisplayValue();
   firstNumber = displayValueLastChild.textContent;
 });
