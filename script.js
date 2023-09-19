@@ -99,8 +99,15 @@ ceBtn.addEventListener("click", deleteLastCha);
 
 numberBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    removeOperators();
-    displayValue = displayValueLastChild.textContent += e.target.textContent;
+    if (
+      displayValueLastChild.textContent.split("").includes(".") &&
+      e.target.textContent === "."
+    ) {
+      return;
+    } else {
+      removeOperators();
+      displayValue = displayValueLastChild.textContent += e.target.textContent;
+    }
   })
 );
 
