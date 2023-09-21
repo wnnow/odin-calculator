@@ -15,7 +15,7 @@ let secondNumber;
 let displayValue;
 let arrOperators = ["+", "-", "÷", "×"];
 let result;
-
+let resultStage = false;
 function operate(firstNumber, operator, secondNumber) {
   return operator(firstNumber, secondNumber);
 }
@@ -53,6 +53,10 @@ function divide(...args) {
 }
 
 function checkOperator(e) {
+  return arrOperators.includes(e);
+}
+
+function assignOperator(e) {
   switch (e.target.textContent) {
     case "+":
       operator = add;
@@ -95,7 +99,7 @@ function removeOperators() {
 }
 
 function updateUpperDisplayValue() {
-  upperDisplayLine.textContent = `${firstNumber} ${operatorStr} ${secondNumber}`;
+  upperDisplayLine.textContent = `${firstNumber} ${operatorStr} ${secondNumber} = `;
 }
 
 resetBtn.addEventListener("click", clearDisplay);
@@ -117,34 +121,36 @@ numberBtns.forEach((btn) =>
 
 operators.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (operator) {
+    if (operator && resultStage === false) {
       secondNumber = Number(displayValueLastChild.textContent);
-
       result = operate(Number(firstNumber), operator, Number(secondNumber));
-
       updateUpperDisplayValue();
-      checkOperator(e);
+      assignOperator(e);
       firstNumber = result;
-      displayValueLastChild.textContent = e.target.textContent;
-      operatorStr = e.target.textContent;
     } else {
       firstNumber = Number(displayValueLastChild.textContent);
-      checkOperator(e);
-      displayValueLastChild.textContent = e.target.textContent;
-      operatorStr = e.target.textContent;
+      assignOperator(e);
     }
+    displayValueLastChild.textContent = e.target.textContent;
+    operatorStr = e.target.textContent;
+    resultStage = false;
   })
 );
 resultBtn.addEventListener("click", (e) => {
-  secondNumber = Number(displayValueLastChild.textContent);
-  displayValueLastChild.textContent = operate(
-    firstNumber,
+  if (checkOperator(displayValueLastChild.textContent)) {
+    return;
+  } else {
+    secondNumber = Number(displayValueLastChild.textContent);
+    displayValueLastChild.textContent = operate(
+      firstNumber,
 
-    operator,
+      operator,
 
-    secondNumber
-  );
-  updateUpperDisplayValue();
-  firstNumber = displayValueLastChild.textContent;
-  secondNumber = "";
+      secondNumber
+    );
+    updateUpperDisplayValue();
+    firstNumber = displayValueLastChild.textContent;
+    secondNumber = "";
+    resultStage = true;
+  }
 });
