@@ -81,6 +81,7 @@ function clearDisplay() {
   firstNumber = "";
   operator = "";
   secondNumber = "";
+  result = "";
 }
 
 function deleteLastCha() {
@@ -99,7 +100,7 @@ function removeOperators() {
 }
 
 function updateUpperDisplayValue() {
-  upperDisplayLine.textContent = `${firstNumber} ${operatorStr} ${secondNumber} = `;
+  upperDisplayLine.textContent = `${firstNumber} ${operatorStr} ${secondNumber} = ${result}`;
 }
 
 resetBtn.addEventListener("click", clearDisplay);
@@ -121,7 +122,10 @@ numberBtns.forEach((btn) =>
 
 operators.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    if (operator && resultStage === false) {
+    if (isNaN(Number(displayValueLastChild.textContent))) {
+      assignOperator(e);
+      operatorStr = e.target.textContent;
+    } else if (operator && resultStage === false) {
       secondNumber = Number(displayValueLastChild.textContent);
       result = operate(Number(firstNumber), operator, Number(secondNumber));
       updateUpperDisplayValue();
@@ -148,6 +152,7 @@ resultBtn.addEventListener("click", (e) => {
 
       secondNumber
     );
+    result = displayValueLastChild.textContent;
     updateUpperDisplayValue();
     firstNumber = displayValueLastChild.textContent;
     secondNumber = "";
