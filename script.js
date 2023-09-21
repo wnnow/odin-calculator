@@ -14,6 +14,7 @@ let operator;
 let secondNumber;
 let displayValue;
 let arrOperators = ["+", "-", "÷", "×"];
+let result;
 
 function operate(firstNumber, operator, secondNumber) {
   return operator(firstNumber, secondNumber);
@@ -73,6 +74,9 @@ function checkOperator(e) {
 function clearDisplay() {
   displayValueLastChild.textContent = "";
   upperDisplayLine.textContent = "";
+  firstNumber = "";
+  operator = "";
+  secondNumber = "";
 }
 
 function deleteLastCha() {
@@ -106,17 +110,29 @@ numberBtns.forEach((btn) =>
       return;
     } else {
       removeOperators();
-      displayValue = displayValueLastChild.textContent += e.target.textContent;
+      displayValueLastChild.textContent += e.target.textContent;
     }
   })
 );
 
 operators.forEach((btn) =>
   btn.addEventListener("click", (e) => {
-    firstNumber = Number(displayValueLastChild.textContent);
-    checkOperator(e);
-    displayValue = displayValueLastChild.textContent = e.target.textContent;
-    operatorStr = e.target.textContent;
+    if (operator) {
+      secondNumber = Number(displayValueLastChild.textContent);
+
+      result = operate(Number(firstNumber), operator, Number(secondNumber));
+
+      updateUpperDisplayValue();
+      checkOperator(e);
+      firstNumber = result;
+      displayValueLastChild.textContent = e.target.textContent;
+      operatorStr = e.target.textContent;
+    } else {
+      firstNumber = Number(displayValueLastChild.textContent);
+      checkOperator(e);
+      displayValueLastChild.textContent = e.target.textContent;
+      operatorStr = e.target.textContent;
+    }
   })
 );
 resultBtn.addEventListener("click", (e) => {
@@ -130,4 +146,5 @@ resultBtn.addEventListener("click", (e) => {
   );
   updateUpperDisplayValue();
   firstNumber = displayValueLastChild.textContent;
+  secondNumber = "";
 });
